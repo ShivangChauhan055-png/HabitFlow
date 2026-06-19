@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="HabitFlow — Track your daily habits, maintain streaks, and view beautiful progress analytics." />
+  <title>HabitFlow — Build Better Habits</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/analytics.css" />
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     AUTH VIEW
+════════════════════════════════════════════════════════════════════════════ -->
+<div id="view-auth">
+  <div class="auth-bg"></div>
+  <div class="auth-dots"></div>
+  <div class="auth-orb auth-orb-1"></div>
+  <div class="auth-orb auth-orb-2"></div>
+  <div class="auth-orb auth-orb-3"></div>
+
+  <div class="auth-card">
+    <!-- Logo -->
+    <div class="auth-logo">
+      <div class="auth-logo-icon">🔥</div>
+      <span class="auth-logo-name">HabitFlow</span>
+    </div>
+    <p class="auth-tagline">Build streaks. Track progress. Grow daily.</p>
+
+    <!-- Tabs -->
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-login">Sign In</button>
+      <button class="auth-tab" id="tab-signup">Create Account</button>
+    </div>
+
+    <!-- Login Form -->
+    <div id="form-login">
+      <form class="auth-form" id="login-form" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="login-user">Username</label>
+          <input class="form-input" id="login-user" type="text"
+            placeholder="your_username" autocomplete="username" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="login-pass">Password</label>
+          <div class="pw-wrap">
+            <input class="form-input" id="login-pass" type="password"
+              placeholder="••••••••" autocomplete="current-password" required />
+            <button type="button" class="pw-toggle" title="Show/hide password">👁</button>
+          </div>
+        </div>
+        <p class="error-msg" id="login-error"></p>
+        <button type="submit" class="auth-submit">Sign In</button>
+      </form>
+      <p class="auth-note">Demo: create an account to get started — all data stays in your browser.</p>
+    </div>
+
+    <!-- Signup Form -->
+    <div id="form-signup" class="hidden">
+      <form class="auth-form" id="signup-form" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="signup-name">Display Name</label>
+          <input class="form-input" id="signup-name" type="text"
+            placeholder="Your Name" autocomplete="name" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="signup-user">Username</label>
+          <input class="form-input" id="signup-user" type="text"
+            placeholder="your_username" autocomplete="username" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="signup-pass">Password</label>
+          <div class="pw-wrap">
+            <input class="form-input" id="signup-pass" type="password"
+              placeholder="Min. 6 characters" autocomplete="new-password" required />
+            <button type="button" class="pw-toggle" title="Show/hide password">👁</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="signup-confirm">Confirm Password</label>
+          <div class="pw-wrap">
+            <input class="form-input" id="signup-confirm" type="password"
+              placeholder="Repeat password" autocomplete="new-password" required />
+            <button type="button" class="pw-toggle" title="Show/hide password">👁</button>
+          </div>
+        </div>
+        <p class="error-msg" id="signup-error"></p>
+        <button type="submit" class="auth-submit">Create Account</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     APP VIEW
+════════════════════════════════════════════════════════════════════════════ -->
+<div id="view-app" class="hidden">
+
+  <!-- ── Sidebar ────────────────────────────────────────────────────────── -->
+  <nav id="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon">🔥</div>
+      <span class="sidebar-logo-text">HabitFlow</span>
+    </div>
+
+    <div class="nav-item active" data-section="dashboard">
+      <span class="nav-icon">🏠</span> Dashboard
+    </div>
+    <div class="nav-item" data-section="analytics">
+      <span class="nav-icon">📊</span> Analytics
+    </div>
+    <div class="nav-item" data-section="settings">
+      <span class="nav-icon">⚙️</span> Settings
+    </div>
+
+    <div class="sidebar-spacer"></div>
+
+    <!-- User block -->
+    <div class="sidebar-user">
+      <div class="user-avatar" id="sidebar-avatar">AB</div>
+      <div class="user-meta">
+        <div class="user-name" id="sidebar-name">User</div>
+        <div class="user-handle" id="sidebar-username">@user</div>
+      </div>
+    </div>
+
+    <div class="sidebar-actions">
+      <button class="btn btn-ghost" id="theme-toggle" title="Toggle theme" style="flex:1; justify-content:center;">
+        <span id="theme-icon">☀️</span>
+      </button>
+      <button class="btn btn-danger" id="logout-btn" title="Log out" style="flex:1; justify-content:center;">
+        🚪 Out
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── Main Content ───────────────────────────────────────────────────── -->
+  <div id="main-content">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="icon-btn" id="mobile-menu-btn" aria-label="Open menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+        <span class="topbar-title" id="topbar-title">Dashboard</span>
+      </div>
+      <div class="topbar-right">
+        <button class="btn btn-primary" id="add-habit-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          New Habit
+        </button>
+      </div>
+    </header>
+
+    <!-- ── Dashboard Section ──────────────────────────────────────────── -->
+    <section id="section-dashboard" class="app-section page-content">
+
+      <div class="greeting-row">
+        <div class="greeting-text-block">
+          <div id="greeting-text">Good morning! 👋</div>
+          <div id="today-date">Today</div>
+        </div>
+      </div>
+
+      <!-- Quote -->
+      <div class="quote-card">
+        <div id="quote-text">"Loading your daily inspiration…"</div>
+        <div id="quote-author">— HabitFlow</div>
+      </div>
+
+      <!-- Summary -->
+      <div class="summary-bar">
+        <div class="summary-ring-wrap" id="summary-ring"></div>
+        <div class="summary-info">
+          <div id="summary-text">0 of 0 completed today</div>
+          <div id="summary-streak">🏆 Keep it up!</div>
+          <div class="summary-progress-bar-wrap">
+            <div class="summary-progress-bar" id="summary-progress-bar" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Habits grid -->
+      <div class="habits-header">
+        <h2>Today's Habits</h2>
+        <span class="habits-count" id="habits-count">0 habits</span>
+      </div>
+      <div id="habits-grid"></div>
+
+    </section>
+
+    <!-- ── Analytics Section ──────────────────────────────────────────── -->
+    <section id="section-analytics" class="app-section page-content hidden">
+
+      <div class="section-heading">Analytics</div>
+      <div class="section-sub">Your habit performance at a glance.</div>
+
+      <!-- Stat cards -->
+      <div class="stat-cards">
+        <div class="stat-card">
+          <div class="stat-card-icon">📋</div>
+          <div class="stat-card-value" id="stat-habits">0</div>
+          <div class="stat-card-label">Total Habits</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">✅</div>
+          <div class="stat-card-value" id="stat-today">0/0</div>
+          <div class="stat-card-label">Done Today</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">📈</div>
+          <div class="stat-card-value" id="stat-avg">0%</div>
+          <div class="stat-card-label">Avg. Rate (30d)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">🔥</div>
+          <div class="stat-card-value" id="stat-streak">0d</div>
+          <div class="stat-card-label">Top Streak</div>
+        </div>
+      </div>
+
+      <div class="analytics-grid">
+
+        <!-- Weekly chart -->
+        <div class="analytics-panel">
+          <div class="panel-title">
+            <span class="panel-title-icon">📅</span> Weekly Activity
+          </div>
+          <div class="chart-wrap">
+            <canvas id="weekly-chart"></canvas>
+          </div>
+        </div>
+
+        <!-- Streak leaderboard -->
+        <div class="analytics-panel">
+          <div class="panel-title">
+            <span class="panel-title-icon">🏆</span> Streak Leaderboard
+          </div>
+          <div id="streak-leaderboard"></div>
+        </div>
+
+        <!-- Heatmap (full width) -->
+        <div class="analytics-panel full-width">
+          <div class="panel-title">
+            <span class="panel-title-icon">🗓</span> 90-Day Heatmap
+          </div>
+          <div class="heatmap-container">
+            <div id="heatmap-months"></div>
+            <div id="heatmap-grid"></div>
+          </div>
+          <div class="heatmap-legend">
+            <span>Less</span>
+            <div class="legend-cell hm-cell" data-lvl="0"></div>
+            <div class="legend-cell hm-cell" data-lvl="1"></div>
+            <div class="legend-cell hm-cell" data-lvl="2"></div>
+            <div class="legend-cell hm-cell" data-lvl="3"></div>
+            <div class="legend-cell hm-cell" data-lvl="4"></div>
+            <span>More</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── Settings Section ───────────────────────────────────────────── -->
+    <section id="section-settings" class="app-section page-content hidden">
+
+      <div class="section-heading">Settings</div>
+      <div class="section-sub">Manage your account and preferences.</div>
+
+      <div class="settings-card">
+        <div class="settings-profile">
+          <div id="settings-avatar" class="user-avatar" style="width:56px;height:56px;border-radius:16px;font-size:1rem;">?</div>
+          <div>
+            <div id="settings-display-name" style="font-weight:700; font-size:1.05rem;">—</div>
+            <div id="settings-username" style="color:var(--text-sub); font-size:0.82rem; margin-top:2px;">@—</div>
+          </div>
+        </div>
+
+        <div class="settings-row">
+          <div>
+            <div class="settings-row-label">Theme</div>
+            <div class="settings-row-sub">Switch between dark and light mode</div>
+          </div>
+          <button class="btn btn-ghost" id="settings-theme-btn">🌙 Switch to Light Mode</button>
+        </div>
+
+        <div class="settings-row">
+          <div>
+            <div class="settings-row-label">Data Storage</div>
+            <div class="settings-row-sub">All data is stored locally in your browser</div>
+          </div>
+          <span class="badge badge-rate">Local</span>
+        </div>
+
+        <div class="settings-row">
+          <div>
+            <div class="settings-row-label">Sign Out</div>
+            <div class="settings-row-sub">Log out of your account</div>
+          </div>
+          <button class="btn btn-danger" id="logout-btn-settings"
+            onclick="document.getElementById('logout-btn').click()">
+            🚪 Sign Out
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+  </div><!-- /main-content -->
+</div><!-- /view-app -->
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     HABIT MODAL
+════════════════════════════════════════════════════════════════════════════ -->
+<div id="modal-habit" class="hidden">
+  <div id="modal-overlay"></div>
+  <div class="modal-card">
+    <div class="modal-header">
+      <h2 class="modal-title" id="modal-title">New Habit</h2>
+      <button class="icon-btn" id="cancel-habit-btn" aria-label="Close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+
+      <!-- Name -->
+      <div class="form-group">
+        <label class="form-label" for="habit-name-input">Habit Name</label>
+        <input class="form-input" id="habit-name-input" type="text"
+          placeholder="e.g. Morning run, Read 20 pages…" maxlength="60" />
+        <p class="error-msg" id="habit-error"></p>
+      </div>
+
+      <!-- Emoji -->
+      <div class="form-group">
+        <label class="form-label">Icon</label>
+        <div class="emoji-selected-wrap">
+          <div id="selected-emoji">⭐</div>
+          <div id="emoji-grid"></div>
+        </div>
+      </div>
+
+      <!-- Color -->
+      <div class="form-group">
+        <label class="form-label">Colour</label>
+        <div class="color-row">
+          <input type="color" id="habit-color-input" value="#6C63FF" title="Pick a colour" />
+          <span class="text-sub" style="font-size:0.8rem;">Choose an accent colour for your habit card</span>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="cancel-habit-btn-2"
+        onclick="document.getElementById('cancel-habit-btn').click()">Cancel</button>
+      <button class="btn btn-primary" id="save-habit-btn">Save Habit</button>
+    </div>
+  </div>
+</div>
+
+<!-- Global overlays -->
+<div id="confetti-container"></div>
+<div id="toast-container"></div>
+
+<!-- ── Scripts (order matters) ─────────────────────────────────────────────── -->
+<script src="js/quotes.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/habits.js"></script>
+<script src="js/tracker.js"></script>
+<script src="js/analytics.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
