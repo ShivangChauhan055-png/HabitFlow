@@ -119,38 +119,190 @@ window.TrackerModule = (() => {
     return card;
   }
 
+  // ── Circular Progress Ring (larger, for progress cards) ─────────────────
+  function createDashRing(pct, color, size = 96, strokeW = 8) {
+    const r = size / 2 - strokeW;
+    const circ = 2 * Math.PI * r;
+    const offset = circ - (Math.min(Math.max(pct, 0), 100) / 100) * circ;
+    const cx = size / 2;
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" class="progress-ring" style="transform:rotate(-90deg)">
+        <circle class="ring-track" cx="${cx}" cy="${cx}" r="${r}"
+          fill="none" stroke-width="${strokeW}"/>
+        <circle cx="${cx}" cy="${cx}" r="${r}"
+          fill="none" stroke="${color}" stroke-width="${strokeW}"
+          stroke-linecap="round"
+          stroke-dasharray="${circ.toFixed(2)}"
+          stroke-dashoffset="${offset.toFixed(2)}"
+          style="transition: stroke-dashoffset 0.8s cubic-bezier(0.4,0,0.2,1);"/>
+      </svg>`;
+  }
+
   function renderDashboard(username) {
     const session = window.AuthModule.getCurrentSession();
     const habits = window.HabitsModule.getHabits(username);
     const today = new Date();
 
-    // Greeting
+    // ── Greeting ────────────────────────────────────────────────────────────
     const hour = today.getHours();
     const greet = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
     const name = session?.displayName || username;
     setEl('greeting-text', `${greet}, ${name}! 👋`);
     setEl('today-date', today.toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' }));
 
-    // Quote
+    // ── Quote ────────────────────────────────────────────────────────────────
     const q = window.QuotesModule.getTodayQuote();
     setEl('quote-text', `"${q.text}"`);
     setEl('quote-author', `— ${q.author}`);
 
-    // Summary ring
-    const done = habits.filter(h => window.HabitsModule.isCompletedToday(username, h.id)).length;
+    // ── Core stats ──────────────────────────────────────────────────────────
+    const doneToday = habits.filter(h => window.HabitsModule.isCompletedToday(username, h.id)).length;
     const total = habits.length;
-    const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+    const todayPct = total > 0 ? Math.round((doneToday / total) * 100) : 0;
+
+    // Best current streak across all habits
+    const allCurStreaks = habits.map(h => window.HabitsModule.getCurrentStreak(username, h.id));
+    const topCurStreak  = allCurStreaks.length ? Math.max(...allCurStreaks) : 0;
+
+    // Best longest streak across all habits
+    const allLongest = habits.map(h => window.HabitsModule.getLongestStreak(username, h.id));
+    const topLongest = allLongest.length ? Math.max(...allLongest) : 0;
+
+    // Weekly % (last 7 days, across all habits)
+    const weeklyData = window.HabitsModule.getWeeklyData(username);
+    const weeklyTotals = weeklyData.reduce((a, d) => ({ done: a.done + d.completed, total: a.total + d.total }), { done: 0, total: 0 });
+    const weeklyPct = weeklyTotals.total > 0 ? Math.round((weeklyTotals.done / weeklyTotals.total) * 100) : 0;
+
+    // Monthly % (last 30 days)
+    const monthlyRates = habits.map(h => window.HabitsModule.getCompletionRate(username, h.id, 30));
+    const monthlyPct = monthlyRates.length > 0
+      ? Math.round(monthlyRates.reduce((a, b) => a + b, 0) / monthlyRates.length)
+      : 0;
+
+    // Perfect days in last 30 (all habits done)
+    let perfectDays = 0;
+    if (total > 0) {
+      const heatmap = window.HabitsModule.getLast90DaysHeatmap(username).slice(-30);
+      perfectDays = heatmap.filter(d => d.total > 0 && d.count === d.total).length;
+    }
+
+    // ── Populate stat cards ──────────────────────────────────────────────────
+    setEl('dash-total-habits',    total);
+    setEl('dash-completed-today', doneToday);
+    setEl('dash-current-streak',  topCurStreak + (topCurStreak === 1 ? 'd' : 'd'));
+    setEl('dash-longest-streak',  topLongest + (topLongest === 1 ? 'd' : 'd'));
+    setEl('dash-completion-pct',  todayPct + '%');
+    setEl('dash-perfect-days',    perfectDays);
+
+    // ── Circular progress cards ──────────────────────────────────────────────
+    const todayColor   = '#6C63FF';
+    const weeklyColor  = '#00D4AA';
+    const monthlyColor = '#FFB347';
+
+    const todayWrap = document.getElementById('prog-today-wrap');
+    if (todayWrap) {
+      todayWrap.innerHTML = createDashRing(todayPct, todayColor, 100, 9)
+        + `<span class="dash-circular-pct" id="prog-today-pct">${todayPct}%</span>`;
+    }
+    setEl('prog-today-sub', total === 0 ? 'No habits yet' : `${doneToday} of ${total} done`);
+
+    const weeklyWrap = document.getElementById('prog-weekly-wrap');
+    if (weeklyWrap) {
+      weeklyWrap.innerHTML = createDashRing(weeklyPct, weeklyColor, 100, 9)
+        + `<span class="dash-circular-pct" id="prog-weekly-pct">${weeklyPct}%</span>`;
+    }
+    setEl('prog-weekly-sub', `${weeklyTotals.done} completions`);
+
+    const monthlyWrap = document.getElementById('prog-monthly-wrap');
+    if (monthlyWrap) {
+      monthlyWrap.innerHTML = createDashRing(monthlyPct, monthlyColor, 100, 9)
+        + `<span class="dash-circular-pct" id="prog-monthly-pct">${monthlyPct}%</span>`;
+    }
+    setEl('prog-monthly-sub', `Avg across all habits`);
+
+    // ── Legacy summary bar (hidden but populated for safety) ─────────────────
     const summaryWrap = document.getElementById('summary-ring');
     if (summaryWrap) {
-      summaryWrap.innerHTML = createProgressRing(pct, '#6C63FF', 84) + `<span class="summary-pct">${pct}%</span>`;
+      summaryWrap.innerHTML = createProgressRing(todayPct, '#6C63FF', 84)
+        + `<span class="summary-pct">${todayPct}%</span>`;
     }
-    setEl('summary-text', total === 0 ? 'No habits yet' : `${done} of ${total} completed today`);
+    setEl('summary-text', total === 0 ? 'No habits yet' : `${doneToday} of ${total} completed today`);
     setEl('summary-streak', `🏆 Keep it up!`);
 
-    // Grid
+    // ── Recent Activity ──────────────────────────────────────────────────────
+    const activityList = document.getElementById('dash-activity-list');
+    if (activityList) {
+      if (habits.length === 0) {
+        activityList.innerHTML = '<div class="activity-empty">No activity yet — start tracking!</div>';
+      } else {
+        // Show today's habits sorted: done first
+        const sorted = [...habits].sort((a, b) => {
+          const ad = window.HabitsModule.isCompletedToday(username, a.id);
+          const bd = window.HabitsModule.isCompletedToday(username, b.id);
+          return bd - ad;
+        });
+        const shown = sorted.slice(0, 6);
+        activityList.innerHTML = shown.map((h, i) => {
+          const done = window.HabitsModule.isCompletedToday(username, h.id);
+          const streak = window.HabitsModule.getCurrentStreak(username, h.id);
+          const streakText = streak > 0 ? `🔥 ${streak}d streak` : 'Start today!';
+          return `
+            <div class="activity-item" style="animation-delay:${i * 0.06}s">
+              <div class="activity-emoji" style="background:${h.color}22">
+                ${h.emoji}
+              </div>
+              <div class="activity-info">
+                <div class="activity-name">${escHtml(h.name)}</div>
+                <div class="activity-time">${streakText}</div>
+              </div>
+              <span class="activity-badge ${done ? 'done' : 'pending'}">
+                ${done ? 'Done ✓' : 'Pending'}
+              </span>
+            </div>`;
+        }).join('');
+      }
+    }
+
+    // ── Quick Action buttons ─────────────────────────────────────────────────
+    const qaAdd = document.getElementById('qa-add-habit');
+    if (qaAdd) {
+      qaAdd.onclick = () => window.AppModule.openAddModal();
+    }
+    const qaAnalytics = document.getElementById('qa-analytics');
+    if (qaAnalytics) {
+      qaAnalytics.onclick = () => window.AppModule.navigate('analytics');
+    }
+    const qaSettings = document.getElementById('qa-settings');
+    if (qaSettings) {
+      qaSettings.onclick = () => window.AppModule.navigate('settings');
+    }
+    const qaCompleteAll = document.getElementById('qa-complete-all');
+    if (qaCompleteAll) {
+      qaCompleteAll.onclick = () => {
+        const ds = new Date().toISOString().split('T')[0];
+        let anyMarked = false;
+        habits.forEach(h => {
+          if (!window.HabitsModule.isCompletedToday(username, h.id)) {
+            window.HabitsModule.toggleCompletion(username, h.id, ds);
+            anyMarked = true;
+          }
+        });
+        if (anyMarked) {
+          showToast('All habits marked done! 🎉');
+          triggerConfetti(window.innerWidth / 2, window.innerHeight / 3);
+        } else {
+          showToast('All habits already done! 🏆');
+        }
+        renderDashboard(username);
+      };
+    }
+
+    // ── Habits grid ──────────────────────────────────────────────────────────
     const grid = document.getElementById('habits-grid');
     if (!grid) return;
     grid.innerHTML = '';
+
+    setEl('habits-count', `${total} habit${total !== 1 ? 's' : ''}`);
 
     if (habits.length === 0) {
       grid.innerHTML = `

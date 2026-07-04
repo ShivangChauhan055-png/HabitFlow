@@ -172,6 +172,7 @@
     <!-- ── Dashboard Section ──────────────────────────────────────────── -->
     <section id="section-dashboard" class="app-section page-content">
 
+      <!-- Greeting -->
       <div class="greeting-row">
         <div class="greeting-text-block">
           <div id="greeting-text">Good morning! 👋</div>
@@ -179,14 +180,114 @@
         </div>
       </div>
 
-      <!-- Quote -->
+      <!-- Motivational Quote Card -->
       <div class="quote-card">
         <div id="quote-text">"Loading your daily inspiration…"</div>
         <div id="quote-author">— HabitFlow</div>
       </div>
 
-      <!-- Summary -->
-      <div class="summary-bar">
+      <!-- ── Stats Cards Row ────────────────────────────────────────────── -->
+      <div class="dash-stats-grid">
+        <div class="dash-stat-card card-purple">
+          <div class="dash-stat-icon">📋</div>
+          <div class="dash-stat-value" id="dash-total-habits">0</div>
+          <div class="dash-stat-label">Total Habits</div>
+        </div>
+        <div class="dash-stat-card card-teal">
+          <div class="dash-stat-icon">✅</div>
+          <div class="dash-stat-value" id="dash-completed-today">0</div>
+          <div class="dash-stat-label">Completed Today</div>
+        </div>
+        <div class="dash-stat-card card-orange">
+          <div class="dash-stat-icon">🔥</div>
+          <div class="dash-stat-value" id="dash-current-streak">0</div>
+          <div class="dash-stat-label">Current Streak</div>
+        </div>
+        <div class="dash-stat-card card-red">
+          <div class="dash-stat-icon">🏆</div>
+          <div class="dash-stat-value" id="dash-longest-streak">0</div>
+          <div class="dash-stat-label">Longest Streak</div>
+        </div>
+        <div class="dash-stat-card card-blue">
+          <div class="dash-stat-icon">📈</div>
+          <div class="dash-stat-value" id="dash-completion-pct">0%</div>
+          <div class="dash-stat-label">Completion %</div>
+        </div>
+        <div class="dash-stat-card card-green">
+          <div class="dash-stat-icon">⚡</div>
+          <div class="dash-stat-value" id="dash-perfect-days">0</div>
+          <div class="dash-stat-label">Perfect Days</div>
+        </div>
+      </div>
+
+      <!-- ── Progress Cards Row ─────────────────────────────────────────── -->
+      <div class="dash-progress-row">
+        <!-- Today's Progress -->
+        <div class="dash-progress-card prog-today">
+          <div class="dash-progress-label">Today's Progress</div>
+          <div class="dash-circular-wrap" id="prog-today-wrap">
+            <span class="dash-circular-pct" id="prog-today-pct">0%</span>
+          </div>
+          <div class="dash-progress-sublabel" id="prog-today-sub">0 of 0 done</div>
+        </div>
+        <!-- Weekly Progress -->
+        <div class="dash-progress-card prog-weekly">
+          <div class="dash-progress-label">Weekly Progress</div>
+          <div class="dash-circular-wrap" id="prog-weekly-wrap">
+            <span class="dash-circular-pct" id="prog-weekly-pct">0%</span>
+          </div>
+          <div class="dash-progress-sublabel" id="prog-weekly-sub">Last 7 days</div>
+        </div>
+        <!-- Monthly Progress -->
+        <div class="dash-progress-card prog-monthly">
+          <div class="dash-progress-label">Monthly Progress</div>
+          <div class="dash-circular-wrap" id="prog-monthly-wrap">
+            <span class="dash-circular-pct" id="prog-monthly-pct">0%</span>
+          </div>
+          <div class="dash-progress-sublabel" id="prog-monthly-sub">Last 30 days</div>
+        </div>
+      </div>
+
+      <!-- ── Bottom Row: Recent Activity + Quick Actions ────────────────── -->
+      <div class="dash-bottom-row">
+        <!-- Recent Activity -->
+        <div class="dash-panel">
+          <div class="dash-panel-title">
+            <span class="dash-panel-title-icon">🕐</span> Recent Activity
+          </div>
+          <div class="activity-list" id="dash-activity-list">
+            <div class="activity-empty">No activity yet — start tracking!</div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="dash-panel">
+          <div class="dash-panel-title">
+            <span class="dash-panel-title-icon">⚡</span> Quick Actions
+          </div>
+          <div class="quick-actions-grid">
+            <button class="quick-action-btn qa-primary" id="qa-add-habit">
+              <span class="qa-icon">➕</span>
+              <span class="qa-label">New Habit</span>
+            </button>
+            <button class="quick-action-btn qa-teal" id="qa-analytics">
+              <span class="qa-icon">📊</span>
+              <span class="qa-label">Analytics</span>
+            </button>
+            <button class="quick-action-btn qa-orange" id="qa-complete-all">
+              <span class="qa-icon">🎯</span>
+              <span class="qa-label">Mark All Done</span>
+            </button>
+            <button class="quick-action-btn qa-red" id="qa-settings">
+              <span class="qa-icon">⚙️</span>
+              <span class="qa-label">Settings</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Hidden summary bar (kept for JS compatibility) ─────────────── -->
+      <div class="summary-bar" style="display:none">
         <div class="summary-ring-wrap" id="summary-ring"></div>
         <div class="summary-info">
           <div id="summary-text">0 of 0 completed today</div>
@@ -197,7 +298,7 @@
         </div>
       </div>
 
-      <!-- Habits grid -->
+      <!-- ── Habits grid ─────────────────────────────────────────────────── -->
       <div class="habits-header">
         <h2>Today's Habits</h2>
         <span class="habits-count" id="habits-count">0 habits</span>
