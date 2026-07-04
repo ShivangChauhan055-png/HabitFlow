@@ -86,5 +86,27 @@ window.AuthModule = (() => {
     return getCurrentSession() !== null;
   }
 
-  return { register, login, logout, getCurrentSession, isLoggedIn, generateAvatar };
+  function getUserProfile(username) {
+    const users = getUsers();
+    const key = username.toLowerCase().trim();
+    return users[key] || null;
+  }
+
+  function updateUserProfile(username, updates) {
+    const users = getUsers();
+    const key = username.toLowerCase().trim();
+    if (!users[key]) return null;
+    users[key] = { ...users[key], ...updates };
+    saveUsers(users);
+
+    const session = getCurrentSession();
+    if (session && session.username.toLowerCase().trim() === key) {
+      if (updates.displayName) session.displayName = updates.displayName;
+      if (updates.avatar) session.avatar = updates.avatar;
+      sessionStorage.setItem(KEYS.SESSION, JSON.stringify(session));
+    }
+    return users[key];
+  }
+
+  return { register, login, logout, getCurrentSession, isLoggedIn, generateAvatar, getUserProfile, updateUserProfile };
 })();

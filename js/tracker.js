@@ -62,6 +62,18 @@ window.TrackerModule = (() => {
     const ringPct = done ? 100 : rate;
     const ring = createProgressRing(ringPct, habit.color, 58);
 
+    const catColors = {
+      Study: { bg: 'rgba(96,165,250,0.15)', text: '#60A5FA' },
+      Coding: { bg: 'rgba(167,139,250,0.15)', text: '#A78BFA' },
+      Fitness: { bg: 'rgba(248,113,113,0.15)', text: '#F87171' },
+      Reading: { bg: 'rgba(251,146,60,0.15)', text: '#FB923C' },
+      Health: { bg: 'rgba(52,211,153,0.15)', text: '#34D399' },
+      Personal: { bg: 'rgba(244,114,182,0.15)', text: '#F472B6' }
+    };
+    const cat = habit.category || 'Study';
+    const cStyle = catColors[cat] || catColors.Study;
+    const catBadge = `<span class="badge" style="background:${cStyle.bg}; color:${cStyle.text}; font-size:0.7rem; font-weight:600; padding:2px 8px; border-radius:99px;">${cat}</span>`;
+
     const card = document.createElement('div');
     card.className = `habit-card${done ? ' is-done' : ''}`;
     card.dataset.habitId = habit.id;
@@ -78,6 +90,7 @@ window.TrackerModule = (() => {
         <div class="hc-info">
           <div class="hc-name">${escHtml(habit.name)}</div>
           <div class="hc-badges">
+            ${catBadge}
             ${streak > 0
               ? `<span class="badge badge-streak ${streak >= 7 ? 'badge-fire' : ''}">🔥 ${streak}d streak</span>`
               : `<span class="badge badge-start">Start today!</span>`}
@@ -302,7 +315,21 @@ window.TrackerModule = (() => {
     if (!grid) return;
     grid.innerHTML = '';
 
-    setEl('habits-count', `${total} habit${total !== 1 ? 's' : ''}`);
+    // Get search and filter query parameters
+    const searchQuery = document.getElementById('habit-search')?.value.toLowerCase().trim() || '';
+    const categoryFilter = document.getElementById('habit-filter-category')?.value || 'All';
+    const statusFilter = document.getElementById('habit-filter-status')?.value || 'All';
+
+    const filteredHabits = habits.filter(habit => {
+      if (searchQuery && !habit.name.toLowerCase().includes(searchQuery)) return false;
+      if (categoryFilter !== 'All' && (habit.category || 'Study') !== categoryFilter) return false;
+      const done = window.HabitsModule.isCompletedToday(username, habit.id);
+      if (statusFilter === 'Completed' && !done) return false;
+      if (statusFilter === 'Pending' && done) return false;
+      return true;
+    });
+
+    setEl('habits-count', `${filteredHabits.length} habit${filteredHabits.length !== 1 ? 's' : ''}`);
 
     if (habits.length === 0) {
       grid.innerHTML = `
@@ -321,7 +348,17 @@ window.TrackerModule = (() => {
       return;
     }
 
-    habits.forEach(habit => {
+    if (filteredHabits.length === 0) {
+      grid.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">🔍</div>
+          <h3>No matching habits</h3>
+          <p>Try adjusting your search query or filters.</p>
+        </div>`;
+      return;
+    }
+
+    filteredHabits.forEach(habit => {
       const card = renderHabitCard(habit, username);
       grid.appendChild(card);
     });

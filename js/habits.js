@@ -36,13 +36,14 @@ window.HabitsModule = (() => {
     return data.habits.filter(h => !h.archived).sort((a, b) => a.order - b.order);
   }
 
-  function createHabit(username, { name, emoji, color }) {
+  function createHabit(username, { name, emoji, color, category }) {
     const data = getUserData(username);
     const habit = {
       id: genId(),
       name: name.trim(),
       emoji: emoji || '⭐',
       color: color || '#6C63FF',
+      category: category || 'Study',
       createdAt: new Date().toISOString(),
       order: data.habits.length,
       archived: false,

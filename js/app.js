@@ -17,7 +17,11 @@ window.AppModule = (() => {
 
     if (section === 'dashboard') window.TrackerModule.renderDashboard(currentUser);
     if (section === 'analytics') window.AnalyticsModule.renderAnalytics(currentUser);
-    if (section === 'settings') renderSettings();
+    if (section === 'settings') {
+      renderSettings();
+      updateRemindersUI();
+    }
+    if (section === 'profile') renderProfile();
 
     // Close mobile sidebar
     document.getElementById('sidebar')?.classList.remove('open');
@@ -70,6 +74,7 @@ window.AppModule = (() => {
     setEl('modal-title', 'New Habit');
     document.getElementById('habit-name-input').value = '';
     document.getElementById('habit-color-input').value = '#6C63FF';
+    document.getElementById('habit-category-input').value = 'Study';
     selectEmoji('⭐');
     openModal();
   }
@@ -82,6 +87,7 @@ window.AppModule = (() => {
     setEl('modal-title', 'Edit Habit');
     document.getElementById('habit-name-input').value = habit.name;
     document.getElementById('habit-color-input').value = habit.color;
+    document.getElementById('habit-category-input').value = habit.category || 'Study';
     selectEmoji(habit.emoji);
     openModal();
   }
@@ -110,6 +116,7 @@ window.AppModule = (() => {
     const name = document.getElementById('habit-name-input').value.trim();
     const emoji = document.getElementById('selected-emoji').textContent;
     const color = document.getElementById('habit-color-input').value;
+    const category = document.getElementById('habit-category-input').value;
     const errEl = document.getElementById('habit-error');
 
     if (!name) {
@@ -121,15 +128,185 @@ window.AppModule = (() => {
     document.getElementById('habit-name-input').classList.remove('input-error');
 
     if (editingHabitId) {
-      window.HabitsModule.updateHabit(currentUser, editingHabitId, { name, emoji, color });
+      window.HabitsModule.updateHabit(currentUser, editingHabitId, { name, emoji, color, category });
     } else {
-      window.HabitsModule.createHabit(currentUser, { name, emoji, color });
+      window.HabitsModule.createHabit(currentUser, { name, emoji, color, category });
     }
 
     closeModal();
     window.TrackerModule.renderDashboard(currentUser);
     if (currentSection === 'analytics') window.AnalyticsModule.renderAnalytics(currentUser);
     window.TrackerModule.showToast(editingHabitId ? 'Habit updated! ✏️' : 'Habit created! 🌱');
+  }
+
+  // ── Reminders ──────────────────────────────────────────────────────────────
+  function getReminderSettings(username) {
+    try {
+      const raw = localStorage.getItem(`ht_reminders_${username}`);
+      return raw ? JSON.parse(raw) : { enabled: false, time: '20:00', lastTriggeredDate: '' };
+    } catch {
+      return { enabled: false, time: '20:00', lastTriggeredDate: '' };
+    }
+  }
+
+  function saveReminderSettings(username, settings) {
+    localStorage.setItem(`ht_reminders_${username}`, JSON.stringify(settings));
+  }
+
+  function initReminders() {
+    setInterval(checkReminders, 30000);
+    checkReminders();
+  }
+
+  function checkReminders() {
+    if (!currentUser) return;
+    const settings = getReminderSettings(currentUser);
+    if (!settings.enabled || !settings.time) return;
+
+    const now = new Date();
+    const currentHourMin = now.toTimeString().slice(0, 5);
+    const today = now.toDateString();
+
+    if (currentHourMin === settings.time && settings.lastTriggeredDate !== today) {
+      triggerReminderNotification();
+      settings.lastTriggeredDate = today;
+      saveReminderSettings(currentUser, settings);
+    }
+  }
+
+  function triggerReminderNotification() {
+    if (Notification.permission === 'granted') {
+      const habits = window.HabitsModule.getHabits(currentUser);
+      const pendingCount = habits.filter(h => !window.HabitsModule.isCompletedToday(currentUser, h.id)).length;
+      let bodyText = "Time to check off your habits today!";
+      if (pendingCount > 0) {
+        bodyText = `You have ${pendingCount} pending habit${pendingCount !== 1 ? 's' : ''} left for today!`;
+      } else {
+        bodyText = "All habits completed today! Keep up the amazing work! 🔥";
+      }
+      new Notification("HabitFlow Reminder", {
+        body: bodyText,
+        icon: "🔥"
+      });
+    }
+  }
+
+  function updateRemindersUI() {
+    const settings = getReminderSettings(currentUser);
+    const toggle = document.getElementById('reminder-toggle');
+    const timeInput = document.getElementById('reminder-time');
+    if (toggle) toggle.checked = settings.enabled;
+    if (timeInput) timeInput.value = settings.time || '20:00';
+  }
+
+  // ── Profile ────────────────────────────────────────────────────────────────
+  function renderProfile() {
+    const profile = window.AuthModule.getUserProfile(currentUser);
+    if (!profile) return;
+
+    const displayName = profile.displayName || currentUser;
+    const email = profile.email || 'No email set';
+    const joinDate = new Date(profile.createdAt).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+
+    const av = profile.avatar || window.AuthModule.generateAvatar(currentUser);
+    const avEl = document.getElementById('profile-avatar');
+    if (avEl) {
+      avEl.style.background = av.color;
+      avEl.textContent = av.initials;
+    }
+
+    setEl('profile-display-name', displayName);
+    setEl('profile-username', '@' + currentUser);
+    setEl('profile-email-display', email);
+    setEl('profile-join-date', `Joined: ${joinDate}`);
+
+    const habits = window.HabitsModule.getHabits(currentUser);
+    const total = habits.length;
+    const doneToday = habits.filter(h => window.HabitsModule.isCompletedToday(currentUser, h.id)).length;
+
+    const totalCompletions = habits.reduce((sum, h) => {
+      return sum + (window.HabitsModule.getCompletions(currentUser, h.id) || []).length;
+    }, 0);
+
+    const curStreaks = habits.map(h => window.HabitsModule.getCurrentStreak(currentUser, h.id));
+    const longestStreaks = habits.map(h => window.HabitsModule.getLongestStreak(currentUser, h.id));
+    const topCur = curStreaks.length ? Math.max(...curStreaks) : 0;
+    const topBest = longestStreaks.length ? Math.max(...longestStreaks) : 0;
+
+    const rates30 = habits.map(h => window.HabitsModule.getCompletionRate(currentUser, h.id, 30));
+    const avgRate = rates30.length > 0 ? Math.round(rates30.reduce((a, b) => a + b, 0) / rates30.length) : 0;
+
+    const week7 = Array.from({ length: 7 }, (_, i) => {
+      const d = new Date(Date.now() - (6 - i) * 86400000);
+      const ds = d.toISOString().split('T')[0];
+      const done = habits.filter(h => window.HabitsModule.isCompletedOnDate(currentUser, h.id, ds)).length;
+      return { done, total };
+    });
+    const weekDone = week7.reduce((s, d) => s + d.done, 0);
+    const weekTotal = week7.reduce((s, d) => s + d.total, 0);
+    const weekPct = weekTotal > 0 ? Math.round((weekDone / weekTotal) * 100) : 0;
+
+    const todayPct = total > 0 ? Math.round((doneToday / total) * 100) : 0;
+
+    const score = Math.min(100, Math.round(
+      0.4 * todayPct + 0.3 * weekPct + 0.2 * Math.min(100, (topCur / 30) * 100) + 0.1 * avgRate
+    ));
+
+    setEl('profile-total-habits', total);
+    setEl('profile-completed-habits', totalCompletions);
+    setEl('profile-current-streak', `${topCur}d`);
+    setEl('profile-longest-streak', `${topBest}d`);
+    setEl('profile-prod-score', score);
+    setEl('profile-completion-pct', `${avgRate}%`);
+  }
+
+  function openProfileEditModal() {
+    const profile = window.AuthModule.getUserProfile(currentUser);
+    if (!profile) return;
+    document.getElementById('profile-name-input').value = profile.displayName || '';
+    document.getElementById('profile-email-input').value = profile.email || '';
+    document.getElementById('profile-edit-error').textContent = '';
+
+    const m = document.getElementById('modal-profile');
+    m.classList.remove('hidden');
+    requestAnimationFrame(() => m.classList.add('visible'));
+  }
+
+  function closeProfileEditModal() {
+    const m = document.getElementById('modal-profile');
+    m.classList.remove('visible');
+    setTimeout(() => m.classList.add('hidden'), 250);
+  }
+
+  function saveProfileChanges() {
+    const displayName = document.getElementById('profile-name-input').value.trim();
+    const email = document.getElementById('profile-email-input').value.trim();
+    const errEl = document.getElementById('profile-edit-error');
+
+    if (!displayName) {
+      errEl.textContent = 'Display name cannot be empty.';
+      return;
+    }
+
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errEl.textContent = 'Please enter a valid email address.';
+      return;
+    }
+
+    const initials = displayName.substring(0, 2).toUpperCase() || currentUser.substring(0, 2).toUpperCase();
+    const profile = window.AuthModule.getUserProfile(currentUser);
+    const avatar = profile.avatar || window.AuthModule.generateAvatar(currentUser);
+    avatar.initials = initials;
+
+    window.AuthModule.updateUserProfile(currentUser, { displayName, email, avatar });
+    closeProfileEditModal();
+    renderProfile();
+    renderSettings();
+    window.TrackerModule.showToast('Profile updated! 👤');
   }
 
   // ── Settings ───────────────────────────────────────────────────────────────

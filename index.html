@@ -117,6 +117,9 @@
     <div class="nav-item" data-section="analytics">
       <span class="nav-icon">📊</span> Analytics
     </div>
+    <div class="nav-item" data-section="profile">
+      <span class="nav-icon">👤</span> Profile
+    </div>
     <div class="nav-item" data-section="settings">
       <span class="nav-icon">⚙️</span> Settings
     </div>
@@ -295,6 +298,29 @@
           <div class="summary-progress-bar-wrap">
             <div class="summary-progress-bar" id="summary-progress-bar" style="width:0%"></div>
           </div>
+        </div>
+      </div>
+
+      <!-- Search and Filter Bar -->
+      <div class="search-filter-bar">
+        <div class="search-wrap">
+          <input type="text" id="habit-search" placeholder="Search habits..." class="form-input search-input" />
+        </div>
+        <div class="filters-wrap">
+          <select id="habit-filter-category" class="form-input filter-select">
+            <option value="All">All Categories</option>
+            <option value="Study">Study</option>
+            <option value="Coding">Coding</option>
+            <option value="Fitness">Fitness</option>
+            <option value="Reading">Reading</option>
+            <option value="Health">Health</option>
+            <option value="Personal">Personal</option>
+          </select>
+          <select id="habit-filter-status" class="form-input filter-select">
+            <option value="All">All Status</option>
+            <option value="Completed">Completed</option>
+            <option value="Pending">Pending</option>
+          </select>
         </div>
       </div>
 
@@ -540,6 +566,20 @@
 
         <div class="settings-row">
           <div>
+            <div class="settings-row-label">Daily Reminders</div>
+            <div class="settings-row-sub">Get notified to complete your habits</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <input type="time" id="reminder-time" class="form-input" style="width: 110px; padding: 6px 10px;" value="20:00" />
+            <label class="switch">
+              <input type="checkbox" id="reminder-toggle">
+              <span class="slider round"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="settings-row">
+          <div>
             <div class="settings-row-label">Sign Out</div>
             <div class="settings-row-sub">Log out of your account</div>
           </div>
@@ -547,6 +587,67 @@
             onclick="document.getElementById('logout-btn').click()">
             🚪 Sign Out
           </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ── Profile Section ────────────────────────────────────────────── -->
+    <section id="section-profile" class="app-section page-content hidden">
+
+      <div class="section-heading">My Profile</div>
+      <div class="section-sub">View and manage your account details and statistics.</div>
+
+      <div class="profile-container">
+        <!-- Profile Header/Card -->
+        <div class="profile-card">
+          <div class="profile-main-info">
+            <div id="profile-avatar" class="profile-avatar">?</div>
+            <div class="profile-details">
+              <h2 id="profile-display-name">Loading...</h2>
+              <div id="profile-username">@loading</div>
+              <div id="profile-email-display">email@example.com</div>
+              <div id="profile-join-date" class="profile-join-date">Joined: Loading...</div>
+            </div>
+            <button class="btn btn-primary" id="edit-profile-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 4px;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              Edit Profile
+            </button>
+          </div>
+        </div>
+
+        <!-- Profile Statistics Grid -->
+        <div class="profile-stats-grid">
+          <div class="p-stat-card card-purple">
+            <span class="p-stat-icon">📋</span>
+            <span class="p-stat-value" id="profile-total-habits">0</span>
+            <span class="p-stat-label">Total Habits</span>
+          </div>
+          <div class="p-stat-card card-teal">
+            <span class="p-stat-icon">✅</span>
+            <span class="p-stat-value" id="profile-completed-habits">0</span>
+            <span class="p-stat-label">Completions</span>
+          </div>
+          <div class="p-stat-card card-orange">
+            <span class="p-stat-icon">🔥</span>
+            <span class="p-stat-value" id="profile-current-streak">0</span>
+            <span class="p-stat-label">Current Streak</span>
+          </div>
+          <div class="p-stat-card card-red">
+            <span class="p-stat-icon">🏆</span>
+            <span class="p-stat-value" id="profile-longest-streak">0</span>
+            <span class="p-stat-label">Longest Streak</span>
+          </div>
+          <div class="p-stat-card card-blue">
+            <span class="p-stat-icon">🎯</span>
+            <span class="p-stat-value" id="profile-prod-score">0</span>
+            <span class="p-stat-label">Productivity Score</span>
+          </div>
+          <div class="p-stat-card card-green">
+            <span class="p-stat-icon">📈</span>
+            <span class="p-stat-value" id="profile-completion-pct">0%</span>
+            <span class="p-stat-label">Avg Rate (30d)</span>
+          </div>
         </div>
       </div>
 
@@ -580,6 +681,19 @@
         <p class="error-msg" id="habit-error"></p>
       </div>
 
+      <!-- Category -->
+      <div class="form-group">
+        <label class="form-label" for="habit-category-input">Category</label>
+        <select class="form-input" id="habit-category-input" style="background-color: var(--input-bg);">
+          <option value="Study">Study</option>
+          <option value="Coding">Coding</option>
+          <option value="Fitness">Fitness</option>
+          <option value="Reading">Reading</option>
+          <option value="Health">Health</option>
+          <option value="Personal">Personal</option>
+        </select>
+      </div>
+
       <!-- Emoji -->
       <div class="form-group">
         <label class="form-label">Icon</label>
@@ -603,6 +717,42 @@
       <button class="btn btn-ghost" id="cancel-habit-btn-2"
         onclick="document.getElementById('cancel-habit-btn').click()">Cancel</button>
       <button class="btn btn-primary" id="save-habit-btn">Save Habit</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     PROFILE EDIT MODAL
+     ════════════════════════════════════════════════════════════════════════════ -->
+<div id="modal-profile" class="hidden">
+  <div id="modal-profile-overlay" class="modal-overlay"></div>
+  <div class="modal-card">
+    <div class="modal-header">
+      <h2 class="modal-title">Edit Profile</h2>
+      <button class="icon-btn" id="cancel-profile-btn" aria-label="Close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <!-- Display Name -->
+      <div class="form-group">
+        <label class="form-label" for="profile-name-input">Display Name</label>
+        <input class="form-input" id="profile-name-input" type="text" placeholder="Your Name" maxlength="40" />
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label class="form-label" for="profile-email-input">Email Address</label>
+        <input class="form-input" id="profile-email-input" type="email" placeholder="email@example.com" />
+      </div>
+      <p class="error-msg" id="profile-edit-error"></p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="cancel-profile-btn-2">Cancel</button>
+      <button class="btn btn-primary" id="save-profile-btn">Save Changes</button>
     </div>
   </div>
 </div>
