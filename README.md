@@ -102,6 +102,4 @@ HabitFlow
 
 
 
-- Chart.js
-- Vercel
-- Google Fonts
+
