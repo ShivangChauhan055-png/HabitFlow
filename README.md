@@ -1,34 +1,47 @@
 # HabitFlow
 
-HabitFlow is a modern web-based habit tracking application designed to help users build consistency, track daily habits, maintain streaks, and visualize progress through an interactive dashboard.
+HabitFlow is a modern habit tracking web application that helps users build better habits, maintain daily streaks, monitor productivity, and analyze progress through an interactive dashboard. The application provides a clean user interface with analytics, reminders, profile management, and persistent local storage.
 
 ## Live Demo
 
 https://habit-flow-khaki.vercel.app
 
-## Overview
-
-HabitFlow allows users to create and manage habits, monitor daily completion rates, track streaks, and analyze their progress using a clean and responsive interface. The application focuses on improving productivity and helping users develop positive routines.
+---
 
 ## Features
 
-- User Authentication
-- Habit Creation and Management
-- Daily Habit Tracking
-- Streak Tracking
-- Progress Visualization
+- User Authentication (Sign In / Sign Up)
+- Interactive Dashboard
+- Create, Edit and Delete Habits
+- Habit Categories
+- Search & Filter Habits
+- Daily Progress Tracking
+- Current & Longest Streak Tracking
+- Habit Completion Statistics
 - Analytics Dashboard
+- Weekly, Monthly & Yearly Insights
+- Progress Charts
+- Browser Notifications & Habit Reminders
+- User Profile Management
+- Avatar Selection
+- Email & Username Management
 - Motivational Quotes
-- Dark Mode Support
+- Dark Mode
 - Responsive Design
-- Local Data Persistence
+- LocalStorage Data Persistence
+
+---
 
 ## Tech Stack
 
 - HTML5
 - CSS3
 - JavaScript (ES6)
-- Vercel (Deployment)
+- Chart.js
+- LocalStorage
+- Vercel
+
+---
 
 ## Project Structure
 
@@ -36,30 +49,59 @@ HabitFlow allows users to create and manage habits, monitor daily completion rat
 HabitFlow
 │
 ├── css
-│   └── styles.css
+│   ├── analytics.css
+│   ├── auth.css
+│   ├── dashboard.css
+│   └── main.css
 │
 ├── js
+│   ├── analytics.js
+│   ├── app.js
 │   ├── auth.js
 │   ├── habits.js
-│   ├── analytics.js
+│   ├── quotes.js
 │   └── tracker.js
 │
 └── index.html
 ```
-### Open in Browser
 
-```text
-http://localhost:3000
-```
+---
+
+
 ## Usage
 
-1. Create an account or log in.
-2. Add your daily habits.
-3. Mark habits as completed.
-4. Track streaks and progress.
-5. View analytics and performance insights.
-6. Monitor consistency through the dashboard.
+1. Create an account or sign in.
+2. Create your daily habits.
+3. Assign categories to habits.
+4. Mark habits as completed.
+5. Track your daily streaks.
+6. View analytics and progress reports.
+7. Search and filter habits.
+8. Enable reminders and browser notifications.
+9. Update your profile information.
+10. Build better habits consistently.
+
+---
+
+## Future Improvements
+
+- Cloud Database Integration
+- User Authentication with Firebase
+- Google Sign-In
+- Export & Import Data
+- Calendar View
+- Progressive Web App (PWA)
+- Mobile Application
+- Team Challenges & Shared Habits
+
+---
 
 ## Author
 
-Shivang Chauhan
+**Shivang Chauhan**
+
+
+
+- Chart.js
+- Vercel
+- Google Fonts
