@@ -30,7 +30,7 @@
   <div class="auth-card">
     <!-- Logo -->
     <div class="auth-logo">
-      <div class="auth-logo-icon">🔥</div>
+      <div class="auth-logo-icon">HF</div>
       <span class="auth-logo-name">HabitFlow</span>
     </div>
     <p class="auth-tagline">Build streaks. Track progress. Grow daily.</p>
@@ -54,7 +54,7 @@
           <div class="pw-wrap">
             <input class="form-input" id="login-pass" type="password"
               placeholder="••••••••" autocomplete="current-password" required />
-            <button type="button" class="pw-toggle" title="Show/hide password">👁</button>
+            <button type="button" class="pw-toggle" title="Show/hide password">Show</button>
           </div>
         </div>
         <p class="error-msg" id="login-error"></p>
@@ -81,7 +81,7 @@
           <div class="pw-wrap">
             <input class="form-input" id="signup-pass" type="password"
               placeholder="Min. 6 characters" autocomplete="new-password" required />
-            <button type="button" class="pw-toggle" title="Show/hide password">👁</button>
+            <button type="button" class="pw-toggle" title="Show/hide password">Show</button>
           </div>
         </div>
         <div class="form-group">
@@ -89,7 +89,7 @@
           <div class="pw-wrap">
             <input class="form-input" id="signup-confirm" type="password"
               placeholder="Repeat password" autocomplete="new-password" required />
-            <button type="button" class="pw-toggle" title="Show/hide password">👁</button>
+            <button type="button" class="pw-toggle" title="Show/hide password">Show</button>
           </div>
         </div>
         <p class="error-msg" id="signup-error"></p>
@@ -107,21 +107,21 @@
   <!-- ── Sidebar ────────────────────────────────────────────────────────── -->
   <nav id="sidebar">
     <div class="sidebar-logo">
-      <div class="sidebar-logo-icon">🔥</div>
+      <div class="sidebar-logo-icon">HF</div>
       <span class="sidebar-logo-text">HabitFlow</span>
     </div>
 
     <div class="nav-item active" data-section="dashboard">
-      <span class="nav-icon">🏠</span> Dashboard
+      <span class="nav-icon">DB</span> Dashboard
     </div>
     <div class="nav-item" data-section="analytics">
-      <span class="nav-icon">📊</span> Analytics
+      <span class="nav-icon">AN</span> Analytics
     </div>
     <div class="nav-item" data-section="profile">
-      <span class="nav-icon">👤</span> Profile
+      <span class="nav-icon">PR</span> Profile
     </div>
     <div class="nav-item" data-section="settings">
-      <span class="nav-icon">⚙️</span> Settings
+      <span class="nav-icon">SG</span> Settings
     </div>
 
     <div class="sidebar-spacer"></div>
@@ -137,10 +137,10 @@
 
     <div class="sidebar-actions">
       <button class="btn btn-ghost" id="theme-toggle" title="Toggle theme" style="flex:1; justify-content:center;">
-        <span id="theme-icon">☀️</span>
+        <span id="theme-icon">Theme</span>
       </button>
       <button class="btn btn-danger" id="logout-btn" title="Log out" style="flex:1; justify-content:center;">
-        🚪 Out
+        Sign out
       </button>
     </div>
   </nav>
@@ -366,42 +366,42 @@
       <!-- ── Overview Stats (8 cards) ──────────────────────────────────── -->
       <div class="an-overview-grid" id="an-overview-grid">
         <div class="an-stat-card an-card-purple">
-          <div class="an-stat-icon">📋</div>
+          <div class="an-stat-icon">HB</div>
           <div class="an-stat-value an-counter" id="stat-habits">0</div>
           <div class="an-stat-label">Total Habits</div>
         </div>
         <div class="an-stat-card an-card-teal">
-          <div class="an-stat-icon">✅</div>
+          <div class="an-stat-icon">TD</div>
           <div class="an-stat-value" id="stat-today">0</div>
           <div class="an-stat-label">Completed Today</div>
         </div>
         <div class="an-stat-card an-card-blue">
-          <div class="an-stat-icon">⚡</div>
+          <div class="an-stat-icon">AC</div>
           <div class="an-stat-value an-counter" id="an-active">0</div>
           <div class="an-stat-label">Active Habits</div>
         </div>
         <div class="an-stat-card an-card-orange">
-          <div class="an-stat-icon">🔥</div>
+          <div class="an-stat-icon">ST</div>
           <div class="an-stat-value" id="stat-streak">0d</div>
           <div class="an-stat-label">Current Streak</div>
         </div>
         <div class="an-stat-card an-card-red">
-          <div class="an-stat-icon">🏆</div>
+          <div class="an-stat-icon">LG</div>
           <div class="an-stat-value" id="an-longest">0d</div>
           <div class="an-stat-label">Longest Streak</div>
         </div>
         <div class="an-stat-card an-card-green">
-          <div class="an-stat-icon">📈</div>
+          <div class="an-stat-icon">CR</div>
           <div class="an-stat-value" id="stat-avg">0%</div>
           <div class="an-stat-label">Completion Rate</div>
         </div>
         <div class="an-stat-card an-card-indigo">
-          <div class="an-stat-icon">🎯</div>
+          <div class="an-stat-icon">PS</div>
           <div class="an-stat-value an-counter" id="an-score">0</div>
           <div class="an-stat-label">Productivity Score</div>
         </div>
         <div class="an-stat-card an-card-pink">
-          <div class="an-stat-icon">✨</div>
+          <div class="an-stat-icon">TO</div>
           <div class="an-stat-value an-counter" id="an-total-done">0</div>
           <div class="an-stat-label">Total Completions</div>
         </div>
@@ -411,7 +411,7 @@
       <div class="an-charts-row">
         <div class="an-panel">
           <div class="an-panel-header">
-            <div class="an-panel-title"><span>📅</span> Weekly Activity</div>
+            <div class="an-panel-title"><span>WK</span> Weekly Activity</div>
           </div>
           <div class="an-chart-wrap">
             <canvas id="weekly-chart"></canvas>
@@ -419,7 +419,7 @@
         </div>
         <div class="an-panel">
           <div class="an-panel-header">
-            <div class="an-panel-title"><span>📆</span> Monthly Progress</div>
+            <div class="an-panel-title"><span>MN</span> Monthly Progress</div>
           </div>
           <div class="an-chart-wrap">
             <canvas id="monthly-chart"></canvas>
@@ -431,7 +431,7 @@
       <div class="an-charts-row">
         <div class="an-panel">
           <div class="an-panel-header">
-            <div class="an-panel-title"><span>📊</span> Habit Comparison</div>
+            <div class="an-panel-title"><span>CP</span> Habit Comparison</div>
           </div>
           <div class="an-chart-wrap">
             <canvas id="comparison-chart"></canvas>
@@ -439,7 +439,7 @@
         </div>
         <div class="an-panel">
           <div class="an-panel-header">
-            <div class="an-panel-title"><span>🍩</span> Completion Distribution</div>
+            <div class="an-panel-title"><span>DS</span> Completion Distribution</div>
           </div>
           <div class="an-chart-wrap an-chart-doughnut">
             <canvas id="category-chart"></canvas>
@@ -450,7 +450,7 @@
       <!-- ── 365-Day GitHub Heatmap ─────────────────────────────────────── -->
       <div class="an-panel an-panel-full">
         <div class="an-panel-header">
-          <div class="an-panel-title"><span>🗓</span> 365-Day Activity Heatmap</div>
+          <div class="an-panel-title"><span>HM</span> 365-Day Activity Heatmap</div>
           <div class="heatmap-legend">
             <span>Less</span>
             <div class="legend-cell hm-cell" data-lvl="0"></div>
@@ -472,7 +472,7 @@
       <div class="an-charts-row">
         <div class="an-panel">
           <div class="an-panel-header">
-            <div class="an-panel-title"><span>📉</span> Last 30 Days Activity</div>
+            <div class="an-panel-title"><span>30</span> Last 30 Days Activity</div>
           </div>
           <div class="an-chart-wrap">
             <canvas id="activity-chart"></canvas>
@@ -480,7 +480,7 @@
         </div>
         <div class="an-panel">
           <div class="an-panel-header">
-            <div class="an-panel-title"><span>📈</span> Completion Trend</div>
+            <div class="an-panel-title"><span>TR</span> Completion Trend</div>
           </div>
           <div class="an-chart-wrap">
             <canvas id="trend-chart"></canvas>
@@ -492,13 +492,13 @@
       <div class="an-two-col">
         <div class="an-panel">
           <div class="an-panel-header">
-            <div class="an-panel-title"><span>🧠</span> Smart Insights</div>
+            <div class="an-panel-title"><span>IN</span> Smart Insights</div>
           </div>
           <div id="an-insights-list" class="an-insights-list"></div>
         </div>
         <div class="an-panel">
           <div class="an-panel-header">
-            <div class="an-panel-title"><span>🏅</span> Achievements</div>
+            <div class="an-panel-title"><span>AW</span> Achievements</div>
           </div>
           <div id="an-achievements" class="an-achievements"></div>
         </div>
@@ -507,7 +507,7 @@
       <!-- ── Activity Timeline ──────────────────────────────────────────── -->
       <div class="an-panel an-panel-full">
         <div class="an-panel-header">
-          <div class="an-panel-title"><span>🕐</span> Activity Timeline</div>
+          <div class="an-panel-title"><span>TL</span> Activity Timeline</div>
         </div>
         <div id="activity-timeline" class="an-timeline"></div>
       </div>
@@ -515,14 +515,14 @@
       <!-- ── Streak Leaderboard ─────────────────────────────────────────── -->
       <div class="an-panel an-panel-full">
         <div class="an-panel-header">
-          <div class="an-panel-title"><span>🏆</span> Streak Leaderboard</div>
+          <div class="an-panel-title"><span>LB</span> Streak Leaderboard</div>
         </div>
         <div id="streak-leaderboard"></div>
       </div>
 
       <!-- ── Empty State (shown when no habits) ────────────────────────── -->
       <div id="an-empty-state" class="an-empty-state" style="display:none">
-        <div class="an-empty-icon">📊</div>
+        <div class="an-empty-icon">AN</div>
         <h3>No data yet</h3>
         <p>Add some habits and start tracking to unlock beautiful analytics.</p>
         <button class="btn btn-primary" id="an-empty-cta">
@@ -553,7 +553,7 @@
             <div class="settings-row-label">Theme</div>
             <div class="settings-row-sub">Switch between dark and light mode</div>
           </div>
-          <button class="btn btn-ghost" id="settings-theme-btn">🌙 Switch to Light Mode</button>
+          <button class="btn btn-ghost" id="settings-theme-btn">Switch to Light Mode</button>
         </div>
 
         <div class="settings-row">
@@ -585,7 +585,7 @@
           </div>
           <button class="btn btn-danger" id="logout-btn-settings"
             onclick="document.getElementById('logout-btn').click()">
-            🚪 Sign Out
+            Sign Out
           </button>
         </div>
       </div>
@@ -619,32 +619,32 @@
         <!-- Profile Statistics Grid -->
         <div class="profile-stats-grid">
           <div class="p-stat-card card-purple">
-            <span class="p-stat-icon">📋</span>
+            <span class="p-stat-icon">HB</span>
             <span class="p-stat-value" id="profile-total-habits">0</span>
             <span class="p-stat-label">Total Habits</span>
           </div>
           <div class="p-stat-card card-teal">
-            <span class="p-stat-icon">✅</span>
+            <span class="p-stat-icon">CM</span>
             <span class="p-stat-value" id="profile-completed-habits">0</span>
             <span class="p-stat-label">Completions</span>
           </div>
           <div class="p-stat-card card-orange">
-            <span class="p-stat-icon">🔥</span>
+            <span class="p-stat-icon">ST</span>
             <span class="p-stat-value" id="profile-current-streak">0</span>
             <span class="p-stat-label">Current Streak</span>
           </div>
           <div class="p-stat-card card-red">
-            <span class="p-stat-icon">🏆</span>
+            <span class="p-stat-icon">LG</span>
             <span class="p-stat-value" id="profile-longest-streak">0</span>
             <span class="p-stat-label">Longest Streak</span>
           </div>
           <div class="p-stat-card card-blue">
-            <span class="p-stat-icon">🎯</span>
+            <span class="p-stat-icon">PS</span>
             <span class="p-stat-value" id="profile-prod-score">0</span>
             <span class="p-stat-label">Productivity Score</span>
           </div>
           <div class="p-stat-card card-green">
-            <span class="p-stat-icon">📈</span>
+            <span class="p-stat-icon">AR</span>
             <span class="p-stat-value" id="profile-completion-pct">0%</span>
             <span class="p-stat-label">Avg Rate (30d)</span>
           </div>
@@ -698,7 +698,7 @@
       <div class="form-group">
         <label class="form-label">Icon</label>
         <div class="emoji-selected-wrap">
-          <div id="selected-emoji">⭐</div>
+          <div id="selected-emoji">IC</div>
           <div id="emoji-grid"></div>
         </div>
       </div>
