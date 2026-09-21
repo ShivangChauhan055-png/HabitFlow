@@ -20,118 +20,206 @@
 <!-- ═══════════════════════════════════════════════════════════════════════════
      AUTH VIEW
 ════════════════════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     AUTH VIEW — Premium Split-Screen Layout
+════════════════════════════════════════════════════════════════════════════ -->
 <div id="view-auth">
-  <div class="auth-bg"></div>
-  <div class="auth-dots"></div>
-  <div class="auth-orb auth-orb-1"></div>
-  <div class="auth-orb auth-orb-2"></div>
-  <div class="auth-orb auth-orb-3"></div>
 
-  <!-- Floating ambient habit badges -->
-  <div class="auth-streak-badge auth-streak-b1">
-    <span class="sb-icon">🔥</span> 21-day streak
-  </div>
-  <div class="auth-streak-badge auth-streak-b2">
-    <span class="sb-icon">✅</span> 6/7 this week
-  </div>
-  <div class="auth-streak-badge auth-streak-b3">
-    <span class="sb-icon">🌱</span> 3 habits growing
-  </div>
-  <div class="auth-streak-badge auth-streak-b4">
-    <span class="sb-icon">📅</span> 94% completion
-  </div>
+  <!-- ── LEFT PANEL — Authentication Form ─────────────────────────────────── -->
+  <div class="auth-left">
+    <div class="auth-left-inner">
 
-  <div class="auth-card">
-    <!-- Logo -->
-    <div class="auth-logo">
-      <div class="auth-logo-icon">🌿</div>
-      <span class="auth-logo-name">HabitFlow</span>
-    </div>
-    <p class="auth-tagline">Build better habits. Grow every day.</p>
-
-    <!-- Hero headline -->
-    <p class="auth-hero">Your daily growth journey starts here.</p>
-
-    <!-- Mini progress strip decoration -->
-    <div class="auth-progress-strip" aria-hidden="true">
-      <div class="auth-progress-dot lit"></div>
-      <div class="auth-progress-dot lit"></div>
-      <div class="auth-progress-dot mid"></div>
-      <div class="auth-progress-dot semi"></div>
-      <div class="auth-progress-dot"></div>
-      <div class="auth-progress-dot"></div>
-      <div class="auth-progress-dot"></div>
-    </div>
-
-    <!-- Feature pills -->
-    <div class="auth-features" aria-hidden="true">
-      <span class="auth-feature-pill"><span class="fp-icon">✓</span> Daily streaks</span>
-      <span class="auth-feature-pill"><span class="fp-icon">📈</span> Analytics</span>
-      <span class="auth-feature-pill"><span class="fp-icon">🌱</span> Habit garden</span>
-    </div>
-
-    <!-- Tabs -->
-    <div class="auth-tabs">
-      <button class="auth-tab active" id="tab-login">Sign In</button>
-      <button class="auth-tab" id="tab-signup">Create Account</button>
-    </div>
-
-    <!-- Login Form -->
-    <div id="form-login">
-      <form class="auth-form" id="login-form" novalidate>
-        <div class="form-group">
-          <label class="form-label" for="login-user">Username</label>
-          <input class="form-input" id="login-user" type="text"
-            placeholder="your_username" autocomplete="username" required />
+      <!-- Logo -->
+      <div class="auth-logo">
+        <div class="auth-logo-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14 3C14 3 7 8 7 15C7 19.4 10.1 23 14 23C17.9 23 21 19.4 21 15C21 8 14 3 14 3Z" fill="url(#leafGrad)" opacity="0.9"/>
+            <path d="M14 23V12" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+            <path d="M14 17C14 17 10 15 9 12" stroke="white" stroke-width="1.2" stroke-linecap="round" opacity="0.55"/>
+            <path d="M14 14C14 14 17 12.5 18.5 10" stroke="white" stroke-width="1.2" stroke-linecap="round" opacity="0.55"/>
+            <circle cx="20" cy="8" r="2.5" fill="url(#checkGrad)" opacity="0.9"/>
+            <path d="M18.8 8L19.7 9L21.3 7.3" stroke="white" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+            <defs>
+              <linearGradient id="leafGrad" x1="7" y1="3" x2="21" y2="23" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#4ADE80"/>
+                <stop offset="100%" stop-color="#059669"/>
+              </linearGradient>
+              <linearGradient id="checkGrad" x1="17.5" y1="5.5" x2="22.5" y2="10.5" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#34D399"/>
+                <stop offset="100%" stop-color="#059669"/>
+              </linearGradient>
+            </defs>
+          </svg>
         </div>
-        <div class="form-group">
-          <label class="form-label" for="login-pass">Password</label>
-          <div class="pw-wrap">
-            <input class="form-input" id="login-pass" type="password"
-              placeholder="••••••••" autocomplete="current-password" required />
-            <button type="button" class="pw-toggle" title="Show/hide password">Show</button>
+        <span class="auth-logo-name">HabitFlow</span>
+      </div>
+
+      <!-- Heading & Subtext -->
+      <h1 class="auth-heading">Welcome back</h1>
+      <p class="auth-subtext">Stay consistent. Keep growing.</p>
+
+      <!-- Tabs — Sign In / Create Account -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login">Sign In</button>
+        <button class="auth-tab" id="tab-signup">Create Account</button>
+      </div>
+
+      <!-- Login Form -->
+      <div id="form-login">
+        <form class="auth-form" id="login-form" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="login-user">Username</label>
+            <input class="form-input" id="login-user" type="text"
+              placeholder="your_username" autocomplete="username" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="login-pass">Password</label>
+            <div class="pw-wrap">
+              <input class="form-input" id="login-pass" type="password"
+                placeholder="••••••••" autocomplete="current-password" required />
+              <button type="button" class="pw-toggle" title="Show/hide password">Show</button>
+            </div>
+          </div>
+          <p class="error-msg" id="login-error"></p>
+          <button type="submit" class="auth-submit">Sign In &amp; Continue</button>
+        </form>
+        <p class="auth-note">All data stays in your browser — no account required to explore.</p>
+      </div>
+
+      <!-- Signup Form -->
+      <div id="form-signup" class="hidden">
+        <form class="auth-form" id="signup-form" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="signup-name">Display Name</label>
+            <input class="form-input" id="signup-name" type="text"
+              placeholder="Your Name" autocomplete="name" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="signup-user">Username</label>
+            <input class="form-input" id="signup-user" type="text"
+              placeholder="your_username" autocomplete="username" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="signup-pass">Password</label>
+            <div class="pw-wrap">
+              <input class="form-input" id="signup-pass" type="password"
+                placeholder="Min. 6 characters" autocomplete="new-password" required />
+              <button type="button" class="pw-toggle" title="Show/hide password">Show</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="signup-confirm">Confirm Password</label>
+            <div class="pw-wrap">
+              <input class="form-input" id="signup-confirm" type="password"
+                placeholder="Repeat password" autocomplete="new-password" required />
+              <button type="button" class="pw-toggle" title="Show/hide password">Show</button>
+            </div>
+          </div>
+          <p class="error-msg" id="signup-error"></p>
+          <button type="submit" class="auth-submit">Start Growing →</button>
+        </form>
+      </div>
+
+      <!-- Footer tagline -->
+      <p class="auth-footer-note">Small habits. Big changes.</p>
+
+    </div><!-- /auth-left-inner -->
+  </div><!-- /auth-left -->
+
+  <!-- ── RIGHT PANEL — HabitFlow Branding Visual ───────────────────────────── -->
+  <div class="auth-right" aria-hidden="true">
+    <div class="auth-right-inner">
+
+      <!-- Decorative background blobs -->
+      <div class="ar-blob ar-blob-1"></div>
+      <div class="ar-blob ar-blob-2"></div>
+      <div class="ar-blob ar-blob-3"></div>
+
+      <!-- Brand block -->
+      <div class="ar-brand">
+        <div class="ar-brand-icon">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 4C18 4 9 11 9 20C9 25.5 13 30 18 30C23 30 27 25.5 27 20C27 11 18 4 18 4Z" fill="white" opacity="0.9"/>
+            <path d="M18 30V16" stroke="rgba(5,150,105,0.8)" stroke-width="2" stroke-linecap="round"/>
+            <path d="M18 22C18 22 13 20 11.5 16" stroke="rgba(5,150,105,0.6)" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M18 18C18 18 22 16 24.5 13" stroke="rgba(5,150,105,0.6)" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="ar-brand-name">HabitFlow</span>
+      </div>
+
+      <h2 class="ar-headline">Build better habits.<br>Grow every day.</h2>
+      <p class="ar-sub">Your daily growth journey starts here.</p>
+
+      <!-- Progress ring visual -->
+      <div class="ar-ring-container">
+        <svg class="ar-ring-svg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Outer decorative ring -->
+          <circle cx="60" cy="60" r="54" stroke="rgba(255,255,255,0.10)" stroke-width="1"/>
+          <!-- Background track -->
+          <circle cx="60" cy="60" r="44" stroke="rgba(255,255,255,0.15)" stroke-width="9" stroke-linecap="round"/>
+          <!-- Progress arc — 86% -->
+          <circle cx="60" cy="60" r="44" stroke="white" stroke-width="9"
+            stroke-linecap="round" stroke-dasharray="276.5" stroke-dashoffset="38.7"
+            transform="rotate(-90 60 60)" class="ar-ring-progress"/>
+          <!-- Center content -->
+          <text x="60" y="55" text-anchor="middle" fill="white" font-size="18" font-weight="700" font-family="Space Grotesk, sans-serif">86%</text>
+          <text x="60" y="71" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-size="8.5" font-family="Inter, sans-serif" letter-spacing="0.08em">WEEKLY</text>
+        </svg>
+        <!-- Decorative leaves around ring -->
+        <div class="ar-leaf ar-leaf-1">🍃</div>
+        <div class="ar-leaf ar-leaf-2">🌿</div>
+        <div class="ar-leaf ar-leaf-3">🍀</div>
+      </div>
+
+      <!-- Floating Habit Cards -->
+      <div class="ar-cards">
+
+        <div class="ar-card ar-card-1">
+          <span class="ar-card-icon">🔥</span>
+          <div class="ar-card-text">
+            <span class="ar-card-value">21 day streak</span>
+            <span class="ar-card-label">Keep it up!</span>
           </div>
         </div>
-        <p class="error-msg" id="login-error"></p>
-        <button type="submit" class="auth-submit">Sign In &amp; Continue</button>
-      </form>
-      <p class="auth-note">All data stays in your browser — no account required to explore.</p>
-    </div>
 
-    <!-- Signup Form -->
-    <div id="form-signup" class="hidden">
-      <form class="auth-form" id="signup-form" novalidate>
-        <div class="form-group">
-          <label class="form-label" for="signup-name">Display Name</label>
-          <input class="form-input" id="signup-name" type="text"
-            placeholder="Your Name" autocomplete="name" />
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="signup-user">Username</label>
-          <input class="form-input" id="signup-user" type="text"
-            placeholder="your_username" autocomplete="username" required />
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="signup-pass">Password</label>
-          <div class="pw-wrap">
-            <input class="form-input" id="signup-pass" type="password"
-              placeholder="Min. 6 characters" autocomplete="new-password" required />
-            <button type="button" class="pw-toggle" title="Show/hide password">Show</button>
+        <div class="ar-card ar-card-2">
+          <span class="ar-card-icon">✅</span>
+          <div class="ar-card-text">
+            <span class="ar-card-value">6 / 7 habits</span>
+            <span class="ar-card-label">Completed today</span>
           </div>
         </div>
-        <div class="form-group">
-          <label class="form-label" for="signup-confirm">Confirm Password</label>
-          <div class="pw-wrap">
-            <input class="form-input" id="signup-confirm" type="password"
-              placeholder="Repeat password" autocomplete="new-password" required />
-            <button type="button" class="pw-toggle" title="Show/hide password">Show</button>
+
+        <div class="ar-card ar-card-3">
+          <span class="ar-card-icon">💬</span>
+          <div class="ar-card-text">
+            <span class="ar-card-quote">Consistency is the real progress.</span>
           </div>
         </div>
-        <p class="error-msg" id="signup-error"></p>
-        <button type="submit" class="auth-submit">Start Growing →</button>
-      </form>
-    </div>
-  </div>
+
+      </div><!-- /ar-cards -->
+
+      <!-- Mini calendar dots strip -->
+      <div class="ar-calendar">
+        <div class="ar-cal-header">
+          <span class="ar-cal-icon">📅</span>
+          <span class="ar-cal-title">This Week</span>
+        </div>
+        <div class="ar-cal-days">
+          <div class="ar-cal-day done"><span>M</span></div>
+          <div class="ar-cal-day done"><span>T</span></div>
+          <div class="ar-cal-day done"><span>W</span></div>
+          <div class="ar-cal-day done"><span>T</span></div>
+          <div class="ar-cal-day done"><span>F</span></div>
+          <div class="ar-cal-day done"><span>S</span></div>
+          <div class="ar-cal-day today"><span>S</span></div>
+        </div>
+      </div>
+
+    </div><!-- /auth-right-inner -->
+  </div><!-- /auth-right -->
+
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════════════════════
