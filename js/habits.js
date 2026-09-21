@@ -1,7 +1,7 @@
 'use strict';
 
 window.HabitsModule = (() => {
-  function dataKey(username) { return `ht_data_${username}`; }
+  function dataKey(username) { return `ht_data_${(username || '').toLowerCase().trim()}`; }
 
   function getUserData(username) {
     try {

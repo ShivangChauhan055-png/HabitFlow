@@ -31,6 +31,13 @@ window.AppModule = (() => {
   function showAuth() {
     document.getElementById('view-auth').classList.remove('hidden');
     document.getElementById('view-app').classList.add('hidden');
+    switchTab('login');
+    const lp = document.getElementById('login-pass');
+    if (lp) lp.value = '';
+    const sp = document.getElementById('signup-pass');
+    if (sp) sp.value = '';
+    const sc = document.getElementById('signup-confirm');
+    if (sc) sc.value = '';
   }
 
   function showApp(session) {
@@ -329,7 +336,21 @@ window.AppModule = (() => {
       document.getElementById(`tab-${t}`)?.classList.toggle('active', t === tab);
       document.getElementById(`form-${t}`)?.classList.toggle('hidden', t !== tab);
     });
-    document.getElementById(`${tab}-error`).textContent = '';
+    const errLogin = document.getElementById('login-error');
+    if (errLogin) errLogin.textContent = '';
+    const errSignup = document.getElementById('signup-error');
+    if (errSignup) errSignup.textContent = '';
+
+    // If switching tabs, carry over username if the target field is empty
+    if (tab === 'login') {
+      const su = document.getElementById('signup-user')?.value.trim();
+      const lu = document.getElementById('login-user');
+      if (su && lu && !lu.value.trim()) lu.value = su;
+    } else if (tab === 'signup') {
+      const lu = document.getElementById('login-user')?.value.trim();
+      const su = document.getElementById('signup-user');
+      if (lu && su && !su.value.trim()) su.value = lu;
+    }
   }
 
   // ── Event binding ──────────────────────────────────────────────────────────
@@ -343,16 +364,18 @@ window.AppModule = (() => {
       e.preventDefault();
       const btn = e.target.querySelector('[type=submit]');
       const errEl = document.getElementById('login-error');
-      btn.disabled = true; btn.textContent = 'Signing in…';
+      const originalText = btn ? btn.textContent : 'Sign In & Continue';
+      if (errEl) errEl.textContent = '';
+      if (btn) { btn.disabled = true; btn.textContent = 'Signing in…'; }
       try {
-        const session = await window.AuthModule.login(
-          document.getElementById('login-user').value,
-          document.getElementById('login-pass').value
-        );
+        const username = document.getElementById('login-user')?.value.trim();
+        const pass = document.getElementById('login-pass')?.value;
+        const session = await window.AuthModule.login(username, pass);
         showApp(session);
       } catch (err) {
-        errEl.textContent = err.message;
-        btn.disabled = false; btn.textContent = 'Sign In';
+        if (errEl) errEl.textContent = err.message;
+      } finally {
+        if (btn) { btn.disabled = false; btn.textContent = originalText; }
       }
     });
 
@@ -361,22 +384,26 @@ window.AppModule = (() => {
       e.preventDefault();
       const btn = e.target.querySelector('[type=submit]');
       const errEl = document.getElementById('signup-error');
-      const pass = document.getElementById('signup-pass').value;
-      const confirm = document.getElementById('signup-confirm').value;
-      if (pass !== confirm) { errEl.textContent = 'Passwords do not match.'; return; }
-      btn.disabled = true; btn.textContent = 'Creating account…';
+      const originalText = btn ? btn.textContent : 'Start Growing →';
+      const pass = document.getElementById('signup-pass')?.value;
+      const confirm = document.getElementById('signup-confirm')?.value;
+      if (errEl) errEl.textContent = '';
+
+      if (pass !== confirm) {
+        if (errEl) errEl.textContent = 'Passwords do not match.';
+        return;
+      }
+      if (btn) { btn.disabled = true; btn.textContent = 'Creating account…'; }
       try {
-        await window.AuthModule.register(
-          document.getElementById('signup-user').value,
-          pass,
-          document.getElementById('signup-name').value
-        );
-        const session = await window.AuthModule.login(
-          document.getElementById('signup-user').value, pass);
+        const username = document.getElementById('signup-user')?.value.trim();
+        const displayName = document.getElementById('signup-name')?.value.trim();
+        await window.AuthModule.register(username, pass, displayName);
+        const session = await window.AuthModule.login(username, pass);
         showApp(session);
       } catch (err) {
-        errEl.textContent = err.message;
-        btn.disabled = false; btn.textContent = 'Create Account';
+        if (errEl) errEl.textContent = err.message;
+      } finally {
+        if (btn) { btn.disabled = false; btn.textContent = originalText; }
       }
     });
 
