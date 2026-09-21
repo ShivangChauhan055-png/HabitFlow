@@ -69,11 +69,11 @@ window.AnalyticsModule = (() => {
 
   /* Chart.js shared defaults */
   function chartDefaults(isDark) {
-    const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.06)';
-    const textColor = isDark ? '#8888BB' : '#6666AA';
-    const tooltipBg = isDark ? '#1A1A2E' : '#fff';
-    const tooltipText = isDark ? '#EEE' : '#1A1A2E';
-    const tooltipSub  = isDark ? '#8888BB' : '#6666AA';
+    const gridColor   = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.06)';
+    const textColor   = isDark ? '#7AAA8A' : '#4A7A5A';
+    const tooltipBg   = isDark ? '#0F2218' : '#fff';
+    const tooltipText = isDark ? '#E8F5EE' : '#102016';
+    const tooltipSub  = isDark ? '#7AAA8A' : '#4A7A5A';
     return { gridColor, textColor, tooltipBg, tooltipText, tooltipSub };
   }
 
@@ -189,9 +189,9 @@ window.AnalyticsModule = (() => {
     const { gridColor, textColor, tooltipBg, tooltipText, tooltipSub } = chartDefaults(isDark);
 
     const barColors = data7.map(d => {
-      if (d.total === 0) return 'rgba(108,99,255,0.15)';
-      if (d.pct >= 80)   return '#00D4AA';
-      if (d.pct >= 50)   return '#6C63FF';
+      if (d.total === 0) return 'rgba(45,106,79,0.12)';
+      if (d.pct >= 80)   return '#52B788';
+      if (d.pct >= 50)   return '#40916C';
       if (d.pct > 0)     return '#FF6B6B';
       return isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.06)';
     });

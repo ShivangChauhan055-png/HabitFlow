@@ -28,7 +28,7 @@ window.TrackerModule = (() => {
   function triggerConfetti(originX, originY) {
     const container = document.getElementById('confetti-container');
     if (!container) return;
-    const colors = ['#6C63FF','#00D4AA','#FF6B6B','#FFB347','#FFFFFF','#A855F7'];
+    const colors = ['#52B788','#40916C','#2D6A4F','#74C69D','#D8F3DC','#B7E4C7','#FFB347','#FF6B84'];
     for (let i = 0; i < 36; i++) {
       const el = document.createElement('div');
       el.className = 'confetti-piece';
